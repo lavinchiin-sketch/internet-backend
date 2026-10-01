@@ -1,14 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2/promise');
+const { dbConfig } = require('../config/db');
 
 async function initSchema() {
   const conn = await mysql.createConnection({
-    host: process.env.MYSQLHOST,
-    port: process.env.MYSQLPORT,
-    user: process.env.MYSQLUSER,
-    password: process.env.MYSQLPASSWORD,
-    database: process.env.MYSQLDATABASE,
+    ...dbConfig,
     multipleStatements: true,
   });
   const sql = fs.readFileSync(path.join(__dirname, '..', 'schema.sql'), 'utf8');
