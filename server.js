@@ -27,6 +27,13 @@ setIo(io);
 
 (async () => {
   await testConnection();
-  await ensureAdmin();
+  const initSchema = require('./src/utils/initSchema');
+
+   initSchema()
+     .then(() => ensureAdmin())
+     .catch(err => {
+       console.error('[Startup] failed:', err.message);
+       process.exit(1);
+     });
   server.listen(PORT, '0.0.0.0', () => console.log(`[Server] INTERNet API running on port ${PORT}`));
 })();
